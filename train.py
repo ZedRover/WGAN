@@ -203,13 +203,13 @@ class Trainer:
 if __name__ == '__main__':
     
     
-    cpu_num = cpu_count()
-    os.environ['OMP_NUM_THREADS'] = str(cpu_num)
-    os.environ['OPENBLAS_NUM_THREADS'] = str(cpu_num)
-    os.environ['MKL_NUM_THREADS'] = str(cpu_num)
-    os.environ['VECLIB_MAXIMUM_THREADS'] = str(cpu_num)
-    os.environ['NUMEXPR_NUM_THREADS'] = str(cpu_num)
-    torch.set_num_threads(cpu_num)
+    # cpu_num = cpu_count()
+    # os.environ['OMP_NUM_THREADS'] = str(cpu_num)
+    # os.environ['OPENBLAS_NUM_THREADS'] = str(cpu_num)
+    # os.environ['MKL_NUM_THREADS'] = str(cpu_num)
+    # os.environ['VECLIB_MAXIMUM_THREADS'] = str(cpu_num)
+    # os.environ['NUMEXPR_NUM_THREADS'] = str(cpu_num)
+    # torch.set_num_threads(cpu_num)
 
     parser = argparse.ArgumentParser(prog='GANetano', usage='%(prog)s [options]')
     parser.add_argument('-ds', '--dataset', type=str, dest='dataset', default='sines',
