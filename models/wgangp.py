@@ -1,3 +1,8 @@
+'''
+Author: Samuel Wang
+Date: 2021-11-04 10:16:43
+Description: 
+'''
 from torch import nn
 from torch.nn.utils import spectral_norm
 
@@ -13,50 +18,30 @@ class SqueezeDimension(nn.Module):
 
 
 def create_generator_architecture():
-    return nn.Sequential(nn.Linear(50, 100),
-                         nn.LeakyReLU(0.2, inplace=True),
-                         AddDimension(),
-                         spectral_norm(nn.Conv1d(1, 32, 3, padding=1), n_power_iterations=10),
-                         nn.Upsample(200),
-
-                         spectral_norm(nn.Conv1d(32, 32, 3, padding=1), n_power_iterations=10),
-                         nn.LeakyReLU(0.2, inplace=True),
-                         nn.Upsample(400),
-
-                         spectral_norm(nn.Conv1d(32, 32, 3, padding=1), n_power_iterations=10),
-                         nn.LeakyReLU(0.2, inplace=True),
-                         nn.Upsample(800),
-
-                         spectral_norm(nn.Conv1d(32, 1, 3, padding=1), n_power_iterations=10),
-                         nn.LeakyReLU(0.2, inplace=True),
-
-                         SqueezeDimension(),
-                         nn.Linear(800, 100)
-                         )
+    return nn.Sequential(
+        nn.Linear(50, 100), nn.LeakyReLU(0.2, inplace=True), AddDimension(),
+        spectral_norm(nn.Conv1d(1, 32, 3, padding=1), n_power_iterations=10),
+        nn.Upsample(200),
+        spectral_norm(nn.Conv1d(32, 32, 3, padding=1), n_power_iterations=10),
+        nn.LeakyReLU(0.2, inplace=True), nn.Upsample(400),
+        spectral_norm(nn.Conv1d(32, 32, 3, padding=1), n_power_iterations=10),
+        nn.LeakyReLU(0.2, inplace=True), nn.Upsample(800),
+        spectral_norm(nn.Conv1d(32, 1, 3, padding=1), n_power_iterations=10),
+        nn.LeakyReLU(0.2, inplace=True), SqueezeDimension(),
+        nn.Linear(800, 100))
 
 
 def create_critic_architecture():
-    return nn.Sequential(AddDimension(),
-                         spectral_norm(nn.Conv1d(1, 32, 3, padding=1), n_power_iterations=10),
-                         nn.LeakyReLU(0.2, inplace=True),
-                         nn.MaxPool1d(2),
-
-                         spectral_norm(nn.Conv1d(32, 32, 3, padding=1), n_power_iterations=10),
-                         nn.LeakyReLU(0.2, inplace=True),
-                         nn.MaxPool1d(2),
-
-                         spectral_norm(nn.Conv1d(32, 32, 3, padding=1), n_power_iterations=10),
-                         nn.LeakyReLU(0.2, inplace=True),
-                         nn.Flatten(),
-
-                         nn.Linear(800, 50),
-                         nn.LeakyReLU(0.2, inplace=True),
-
-                         nn.Linear(50, 15),
-                         nn.LeakyReLU(0.2, inplace=True),
-
-                         nn.Linear(15, 1)
-                         )
+    return nn.Sequential(
+        AddDimension(),
+        spectral_norm(nn.Conv1d(1, 32, 3, padding=1), n_power_iterations=10),
+        nn.LeakyReLU(0.2, inplace=True), nn.MaxPool1d(2),
+        spectral_norm(nn.Conv1d(32, 32, 3, padding=1), n_power_iterations=10),
+        nn.LeakyReLU(0.2, inplace=True), nn.MaxPool1d(2),
+        spectral_norm(nn.Conv1d(32, 32, 3, padding=1), n_power_iterations=10),
+        nn.LeakyReLU(0.2, inplace=True), nn.Flatten(), nn.Linear(800, 50),
+        nn.LeakyReLU(0.2, inplace=True), nn.Linear(50, 15),
+        nn.LeakyReLU(0.2, inplace=True), nn.Linear(15, 1))
 
 
 class Generator(nn.Module):

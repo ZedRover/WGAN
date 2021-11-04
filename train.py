@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from torch.utils.tensorboard import writer, SummaryWriter
 from torch.utils.data import DataLoader
 from math import pi
-
+from torch.nn import LSTM 
 from datasets.datasets import Sines, ARMA
 from models.wgangp import Generator, Critic
 from multiprocessing import cpu_count 
@@ -248,4 +248,6 @@ if __name__ == '__main__':
     tb_logdir = os.path.join('..', 'tensorboard', args.log_name)
     writer = SummaryWriter(log_dir=tb_logdir)
 
-    trainer.train(dataloader, epochs=args.epochs, plot_training_samples=True, checkpoint=args.checkpoint)
+    # trainer.train(dataloader, epochs=args.epochs, plot_training_samples=True, checkpoint=args.checkpoint)
+    trainer.train(dataloader, epochs=args.epochs, plot_training_samples=True, checkpoint=False)
+    
